@@ -1,17 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcrypt');
 const cors = require('cors');
-const knex = require('knex')
+const knex = require('knex');
 
 const db = knex({
-  // Enter your own database information here based on what you created
+  // Connect to postgres
   client: 'pg',
   connection: {
     host : '127.0.0.1',
-    user : 'aneagoie',
-    password : '',
-    database : 'smart-brain'
+    user : 'postgres',
+    password : 'root',
+    database : 'face-detection-ai'
   }
 });
 
@@ -28,47 +28,53 @@ app.post('/signin', (req, res) => {
   db.select('email', 'hash').from('login')
     .where('email', '=', req.body.email)
     .then(data => {
-      const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
-      if (isValid) {
-        return db.select('*').from('users')
-          .where('email', '=', req.body.email)
-          .then(user => {
-            res.json(user[0])
-          })
-          .catch(err => res.status(400).json('unable to get user'))
-      } else {
-        res.status(400).json('wrong credentials')
-      }
+        //Hashing password
+      bcrypt.compare(req.body.password, data[0].hash)
+          .then(result => {
+              if (result) {
+                  return db.select('*').from('users')
+                      .where('email', '=', req.body.email)
+                      .then(user => {
+                          res.json(user[0])
+                      })
+                      .catch(err => res.status(400).json('unable to get user'))
+              } else {
+                  res.status(400).json('wrong credentials')
+              }
+          });
     })
-    .catch(err => res.status(400).json('wrong credentials'))
+    .catch(err => res.status(400).json('eror status' + err + 'wrong credentials'))
 })
 
 app.post('/register', (req, res) => {
   const { email, name, password } = req.body;
-  const hash = bcrypt.hashSync(password);
-    db.transaction(trx => {
-      trx.insert({
-        hash: hash,
-        email: email
-      })
-      .into('login')
-      .returning('email')
-      .then(loginEmail => {
-        return trx('users')
-          .returning('*')
-          .insert({
-            email: loginEmail[0],
-            name: name,
-            joined: new Date()
+  //HASHING
+  bcrypt.hash(password, 10)
+      .then(hash => {
+          db.transaction(trx => {
+              trx.insert({
+                  hash: hash,
+                  email: email
+              })
+                  .into('login')
+                  .returning('email')
+                  .then(loginEmail => {
+                      return trx('users')
+                          .returning('*')
+                          .insert({
+                              email: loginEmail[0],
+                              name: name,
+                              joined: new Date()
+                          })
+                          .then(user => {
+                              res.json(user[0]);
+                          })
+                  })
+                  .then(trx.commit)
+                  .catch(trx.rollback)
           })
-          .then(user => {
-            res.json(user[0]);
-          })
-      })
-      .then(trx.commit)
-      .catch(trx.rollback)
-    })
-    .catch(err => res.status(400).json('unable to register'))
+              .catch(err => res.status(400).json(err + 'unable to register'))
+      });
 })
 
 app.get('/profile/:id', (req, res) => {
