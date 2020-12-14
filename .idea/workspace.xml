@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb613f45-251d-4638-b8d9-b26c76e1bc2b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/controller/image.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controller/profile.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controller/register.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/controller/signIn.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/image.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/image.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/register.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controller/signIn.js" beforeDir="false" afterPath="$PROJECT_DIR$/controller/signIn.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +54,7 @@
       <workItem from="1607908087971" duration="566000" />
       <workItem from="1607919525368" duration="583000" />
       <workItem from="1607929108013" duration="2091000" />
-      <workItem from="1607941198934" duration="6018000" />
+      <workItem from="1607941198934" duration="10723000" />
     </task>
     <servers />
   </component>

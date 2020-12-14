@@ -1,13 +1,17 @@
 const handleSignIn = (req, res, db, bcrypt) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        return res.status(400).json('Inputan salah');
+    }
     db.select('email', 'hash').from('login')
-        .where('email', '=', req.body.email)
+        .where('email', '=', email)
         .then(data => {
             //Hashing password
-            bcrypt.compare(req.body.password, data[0].hash)
+            bcrypt.compare(password, data[0].hash)
                 .then(result => {
                     if (result) {
                         return db.select('*').from('users')
-                            .where('email', '=', req.body.email)
+                            .where('email', '=', email)
                             .then(user => {
                                 res.json(user[0])
                             })
